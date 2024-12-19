@@ -1,19 +1,21 @@
-import { Pressable, StyleSheet, Text, View } from 'react-native'
+import { Pressable, PressableProps, StyleSheet, Text, View } from 'react-native'
 import React, { FC, memo } from 'react'
 
 type ShutterBtnProps = {
     onPress: () => void
-}
+    isRecording: boolean
+} & PressableProps
 
-const ShutterBtn:FC<ShutterBtnProps> = memo(({ onPress }) => {
-    console.log('ShutterBtn')
+const ShutterBtn:FC<ShutterBtnProps> = ({ onPress, isRecording , ...PressableProps}) => {
+
   return (
-    <Pressable style={styles.shutterBtn} onPress={onPress}>
-      <View style={styles.innerBtn} /> 
+    <Pressable style={[styles.shutterBtn]}
+    onPress={onPress} {...PressableProps}>
+      <View style={[styles.innerBtn, isRecording && { backgroundColor: 'red' }]} /> 
 
     </Pressable>
   )
-})
+}
 
 export default ShutterBtn
 
