@@ -6,6 +6,12 @@ import { AntDesign, FontAwesome6 } from '@expo/vector-icons'
 import { router } from 'expo-router'
 import ShutterBtn from '../components/ShutterBtn'
 
+import * as FileSystem from 'expo-file-system'
+import path from 'path'
+import { Pressable } from 'react-native'
+
+const DUMMY_PHOTO = 'https://images.pexels.com/photos/29773887/pexels-photo-29773887/free-photo-of-charming-getreidegasse-in-salzburg-austria.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'
+
 const CameraScreen = () => {
 
   const [permission, requestPermission] = useCameraPermissions()
@@ -33,6 +39,19 @@ const CameraScreen = () => {
     setLoading(false)
   }, [])
 
+  const savePhoto = async (uri: string) => {
+    const fileName = path.parse(uri).base
+
+    await FileSystem.moveAsync({
+      from: uri,
+      to: FileSystem.documentDirectory + fileName
+    })
+
+    setPhoto(undefined)
+    router.back()
+  }
+
+
 
 
   if (photo) {
@@ -42,6 +61,9 @@ const CameraScreen = () => {
         <AntDesign name="close" size={24} color="black" style={styles.closeButton} onPress={
           () => setPhoto(undefined)
           } />
+          <Pressable style={styles.saveButton} onPress={() => savePhoto(photo.uri)}>
+            <Text style={styles.saveButtonText}>Save</Text>
+          </Pressable>
       </View>
     )
   }
@@ -91,5 +113,17 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
 
+  },
+  saveButton: {
+    position: 'absolute',
+    bottom: 40,
+    alignSelf: 'center',
+    padding: 10,
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    borderRadius: 10,
+  },
+  saveButtonText: {
+    color: 'white',
+    fontSize: 20,
   }
 })
