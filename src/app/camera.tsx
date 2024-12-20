@@ -133,7 +133,7 @@ const CameraScreen = () => {
             () => setPhoto(undefined)
           } />
           <Pressable style={styles.saveButton} onPress={() => savePhoto(photo.uri)}>
-            <Text style={styles.saveButtonText}>Save</Text>
+            <Text style={styles.saveButtonText}>Done</Text>
           </Pressable>
         </View>
       )

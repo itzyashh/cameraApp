@@ -4,6 +4,8 @@ import FontAwesome from '@expo/vector-icons/FontAwesome';
 import * as FileSystem from 'expo-file-system';
 import { useCallback, useEffect, useState } from "react";
 import { getMediaType } from "../utils/media";
+import { useVideoPlayer, VideoView } from "expo-video";
+import MediaListItem from "../components/MediaListItem";
 
 type Media = {
   name: string
@@ -39,15 +41,7 @@ export default function Index() {
       numColumns={3}
       contentContainerStyle={{ gap: 1 }}
       columnWrapperStyle={{ gap: 1 }}
-      renderItem={({ item }) => (
-        <Link asChild href={`/${item.name}`}>
-        <Pressable onPress={() => {}} style={{ flex: 1, maxWidth: '33.33%' }}>
-          {/* @ts-ignore */}
-          {item.type === 'video' && <FontAwesome name="play-circle-o" size={24} style={styles.videoIcon} />}
-          <Image source={{ uri: item.uri }} style={{  aspectRatio: 3/4 }} />
-        </Pressable>
-        </Link>
-      )}
+      renderItem={({ item }) => <MediaListItem media={item} />}
     />
 
 
@@ -73,12 +67,5 @@ const styles = StyleSheet.create({
     backgroundColor: 'lightblue',
     borderRadius: 10
   },
-  videoIcon: {
-    position: 'absolute',
-    color: 'white',
-    fontSize: 24,
-    zIndex: 1,
-    top: 10,
-    left: 10
-  }
+
 })
